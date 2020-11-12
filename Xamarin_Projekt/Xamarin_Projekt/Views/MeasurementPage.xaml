@@ -1,12 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behavior="clr-namespace:Xamarin_Projekt.Behaviors"
              x:Class="Xamarin_Projekt.Views.MeasurementPage"
              Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout>
-            <Entry Text="{Binding Temperatur}" Placeholder="Temperatur"/>
-            <Entry Text="{Binding Humidity}" Placeholder="Humidity"/>
+            <Entry Text="{Binding Temperatur}" Placeholder="Temperatur">
+                <Entry.Behaviors>
+                    <behavior:NumberCheckBehavior/>
+                </Entry.Behaviors>
+            </Entry>
+            <Entry Text="{Binding Humidity}" Placeholder="Humidity">
+                <Entry.Behaviors>
+                    <behavior:NumberCheckBehavior/>
+                </Entry.Behaviors>
+            </Entry>
             <Button Text="Hent" Command="{Binding GetMeasurementCommand}"/>
             <Button Text="Tilføj" Command="{Binding PostMeasurementCommand}"/>
         </StackLayout>

@@ -16,9 +16,12 @@ namespace Xamarin_Projekt.ViewModels
         public MeasurementViewModel()
         {
             Title = "Measurement";
+            //double result;
 
             GetMeasurementCommand = new Command(async () => await GetMeasurement());
-            PostMeasurementCommand = new Command(async () => await PostMeasurement());
+            PostMeasurementCommand = new Command(
+                execute: async () => await PostMeasurement(),
+                canExecute: () => _temperatur > 10 && _humidity > 10);
         }
 
         async Task GetMeasurement()
@@ -32,10 +35,10 @@ namespace Xamarin_Projekt.ViewModels
         }
 
         async Task PostMeasurement()
-        {
+        {            
             bool isValid;
 
-            if (_temperatur != "0" || _humidity != "0")
+            if (_temperatur != 0 || _humidity != 0)
             {
                 Measurements measurements = new Measurements()
                 {
@@ -46,16 +49,16 @@ namespace Xamarin_Projekt.ViewModels
             }
         }
 
-        private string _temperatur;
-        private string _humidity;
+        private double _temperatur;
+        private double _humidity;
 
-        public string Temperatur
+        public double Temperatur
         {
             get => _temperatur;
             set => SetProperty(ref _temperatur, value);
         }
 
-        public string Humidity
+        public double Humidity
         {
             get => _humidity;
             set => SetProperty(ref _humidity, value);

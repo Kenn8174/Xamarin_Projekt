@@ -13,10 +13,10 @@ namespace Xamarin_Projekt.Models
         public int entry_id { get; set; }
 
         // Temperaturen
-        public string field7 { get; set; }
+        public double field7 { get; set; }
 
         // Fugtigheden
-        public string field8 { get; set; }
+        public double field8 { get; set; }
 
         public List<Measurements> feeds { get; set; }
     }
