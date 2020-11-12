@@ -7,11 +7,19 @@ using Xamarin.Forms;
 
 using Xamarin_Projekt.Models;
 using Xamarin_Projekt.Services;
+using Xamarin_Projekt.Services.MeasurementService;
 
 namespace Xamarin_Projekt.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        protected readonly IMeasurementService _measurementService;
+
+        public BaseViewModel()
+        {
+            _measurementService = TinyIoCContainer.Current.Resolve<IMeasurementService>();
+        }
+
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
 
         bool isBusy = false;

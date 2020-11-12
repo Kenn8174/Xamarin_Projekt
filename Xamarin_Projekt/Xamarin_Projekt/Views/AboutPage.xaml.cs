@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin_Projekt.ViewModels;
 
 namespace Xamarin_Projekt.Views
 {
@@ -10,6 +11,7 @@ namespace Xamarin_Projekt.Views
         public AboutPage()
         {
             InitializeComponent();
+            BindingContext = new AboutViewModel();
         }
     }
 }

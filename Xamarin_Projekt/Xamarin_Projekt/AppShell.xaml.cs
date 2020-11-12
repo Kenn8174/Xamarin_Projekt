@@ -13,6 +13,7 @@ namespace Xamarin_Projekt
             InitializeComponent();
             Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
             Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
+            Routing.RegisterRoute(nameof(MeasurementPage), typeof(MeasurementPage));
         }
 
         private async void OnMenuItemClicked(object sender, EventArgs e)
