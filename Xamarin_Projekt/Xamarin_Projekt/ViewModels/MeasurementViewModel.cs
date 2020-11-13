@@ -16,12 +16,27 @@ namespace Xamarin_Projekt.ViewModels
         public MeasurementViewModel()
         {
             Title = "Measurement";
-            //double result;
 
             GetMeasurementCommand = new Command(async () => await GetMeasurement());
             PostMeasurementCommand = new Command(
-                execute: async () => await PostMeasurement(),
-                canExecute: () => _temperatur > 10 && _humidity > 10);
+                execute: async () =>
+                {
+                    bool isValid = double.TryParse(_temperatur, out _) && double.TryParse(_humidity, out _);
+
+                    if (isValid == false)
+                    {
+                        MessagingCenter.Send(this, "InvalidEntry");
+                    }
+                    else
+                    {
+                        IsBusy = true;
+                        IsValid = false;
+                        await PostMeasurement();
+                        MessagingCenter.Send(this, "ValidEntry");
+                        IsBusy = false;
+                        IsValid = true;
+                    }
+                });
         }
 
         async Task GetMeasurement()
@@ -29,39 +44,47 @@ namespace Xamarin_Projekt.ViewModels
             var items = await _measurementService.GetMeasurementAsync();
             foreach (var item in items.feeds)
             {
-                Temperatur = item.field7;
-                Humidity = item.field8;
+                Temperatur = item.field7.ToString();
+                Humidity = item.field8.ToString(); ;
             }
+
+            RefreshCanExecutes();
         }
 
         async Task PostMeasurement()
-        {            
+        {
             bool isValid;
 
-            if (_temperatur != 0 || _humidity != 0)
+
+            Measurements measurements = new Measurements()
             {
-                Measurements measurements = new Measurements()
-                {
-                    field7 = _temperatur,
-                    field8 = _humidity
-                };
-                isValid = await _measurementService.PostMeasurementAsync(measurements);
-            }
+                field7 = Convert.ToDouble(_temperatur),
+                field8 = Convert.ToDouble(_humidity)
+            };
+            isValid = await _measurementService.PostMeasurementAsync(measurements);
+
+            RefreshCanExecutes();
         }
 
-        private double _temperatur;
-        private double _humidity;
+        private string _temperatur;
+        private string _humidity;
 
-        public double Temperatur
+        public string Temperatur
         {
             get => _temperatur;
             set => SetProperty(ref _temperatur, value);
         }
 
-        public double Humidity
+        public string Humidity
         {
             get => _humidity;
             set => SetProperty(ref _humidity, value);
+        }
+
+        void RefreshCanExecutes()
+        {
+            GetMeasurementCommand.ChangeCanExecute();
+            PostMeasurementCommand.ChangeCanExecute();
         }
     }
 }

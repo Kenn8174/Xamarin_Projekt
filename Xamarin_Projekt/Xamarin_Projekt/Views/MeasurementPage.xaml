@@ -6,18 +6,21 @@
              Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout>
+            <Label Text="Temperatur" FontSize="Medium" TextColor="Black"/>
             <Entry Text="{Binding Temperatur}" Placeholder="Temperatur">
                 <Entry.Behaviors>
                     <behavior:NumberCheckBehavior/>
                 </Entry.Behaviors>
             </Entry>
+            <Label Text="Humidity" FontSize="Medium" TextColor="Black"/>
             <Entry Text="{Binding Humidity}" Placeholder="Humidity">
                 <Entry.Behaviors>
                     <behavior:NumberCheckBehavior/>
                 </Entry.Behaviors>
             </Entry>
-            <Button Text="Hent" Command="{Binding GetMeasurementCommand}"/>
-            <Button Text="Tilføj" Command="{Binding PostMeasurementCommand}"/>
+            <Button Text="Hent" FontSize="Medium" Command="{Binding GetMeasurementCommand}" IsEnabled="{Binding IsValid}"/>
+            <Button Text="Tilføj" FontSize="Medium" Command="{Binding PostMeasurementCommand}" IsEnabled="{Binding IsValid}"/>
+            <ActivityIndicator IsRunning="{Binding IsBusy}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

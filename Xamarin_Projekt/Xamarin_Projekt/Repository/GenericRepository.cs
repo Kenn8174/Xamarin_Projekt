@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Polly;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -47,7 +48,26 @@ namespace Xamarin_Projekt.Repository
         {
             try
             {
-                HttpClient httpClient = CreateHttpClient(authToken);
+                return await Policy
+                    .Handle<JsonSerializationException>()
+                    .WaitAndRetryForeverAsync(retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)))
+                    .ExecuteAsync(async () =>
+                    {
+                        HttpClient httpClient = CreateHttpClient(authToken);
+
+                        var content = new StringContent(JsonConvert.SerializeObject(data));
+                        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                        string jsonResult = string.Empty;
+
+                        var responseMessage = await httpClient.PostAsync(uri, content);
+
+                        jsonResult = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        var json = JsonConvert.DeserializeObject<T>(jsonResult);
+                        return json;
+                    });
+
+                /*HttpClient httpClient = CreateHttpClient(authToken);
 
                 var content = new StringContent(JsonConvert.SerializeObject(data));
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -69,11 +89,12 @@ namespace Xamarin_Projekt.Repository
                     throw new ServiceAuthenticationException(jsonResult);
                 }
 
-                throw new HttpRequestExceptionEx(responseMessage.StatusCode, jsonResult);
+                throw new HttpRequestExceptionEx(responseMessage.StatusCode, jsonResult);*/
 
             }
             catch (Exception e)
             {
+
                 throw;
             }
         }

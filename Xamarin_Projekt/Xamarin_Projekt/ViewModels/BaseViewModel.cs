@@ -29,6 +29,13 @@ namespace Xamarin_Projekt.ViewModels
             set { SetProperty(ref isBusy, value); }
         }
 
+        bool isValid = true;
+        public bool IsValid
+        {
+            get { return isValid; }
+            set { SetProperty(ref isValid, value); }
+        }
+
         string title = string.Empty;
         public string Title
         {

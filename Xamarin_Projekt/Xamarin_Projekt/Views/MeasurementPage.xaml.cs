@@ -17,6 +17,16 @@ namespace Xamarin_Projekt.Views
         {
             InitializeComponent();
             BindingContext = new MeasurementViewModel();
+
+            MessagingCenter.Subscribe<MeasurementViewModel>(this, "InvalidEntry", (sender) =>
+            {
+                DisplayAlert("Error", "The entries must be a number!", "OK");
+            });
+
+            MessagingCenter.Subscribe<MeasurementViewModel>(this, "ValidEntry", (sender) =>
+            {
+                DisplayAlert("Success", "The temperatur and humidity has been saved and send to the Thingspeak API!", "OK");
+            });
         }
     }
 }
