@@ -12,12 +12,13 @@ namespace Xamarin_Projekt.ViewModels
 
         public Command GetMeasurementCommand { get; }
         public Command PostMeasurementCommand { get; set; }
+        public Command GetAllMeasurementsCommand { get; }
 
         public MeasurementViewModel()
         {
             Title = "Measurement";
 
-            GetMeasurementCommand = new Command(async () => await GetMeasurement());
+            GetMeasurementCommand = new Command(async () => await GetMeasurement(1));
 
             PostMeasurementCommand = new Command(
                 execute: async () =>
@@ -38,19 +39,21 @@ namespace Xamarin_Projekt.ViewModels
                         IsValid = true;
                     }
                 });
+
+            GetAllMeasurementsCommand = new Command(async () => await GetMeasurement(1000));
         }
 
         /// <summary>
         /// Henter temperatur og fugtighed
         /// </summary>
         /// <returns></returns>
-        async Task GetMeasurement()
+        async Task GetMeasurement(int amount)
         {
-            var items = await _measurementService.GetMeasurementAsync();
+            var items = await _measurementService.GetMeasurementAsync(amount);
             foreach (var item in items.feeds)
             {
                 Temperatur = item.field7.ToString();
-                Humidity = item.field8.ToString(); ;
+                Humidity = item.field8.ToString();
             }
 
             RefreshCanExecutes();

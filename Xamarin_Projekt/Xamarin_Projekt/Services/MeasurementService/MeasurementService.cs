@@ -21,14 +21,14 @@ namespace Xamarin_Projekt.Services.MeasurementService
         /// Laver det nødvendige API url for GET, som henter data til appen, fra API'en
         /// </summary>
         /// <returns></returns>
-        public async Task<Measurements> GetMeasurementAsync()
+        public async Task<Measurements> GetMeasurementAsync(int amount)
         {
             UriBuilder builder = new UriBuilder(ApiConstants.ApiURL)
             {
                 // https://api.thingspeak.com/channels/1217134/feeds.json?api_key=ZH6EGHKLH20U4K54&results=1               // result=1, betyder at den henter det seneste målte data
 
                 Path = $"channels/{ApiConstants.ApiID}/feeds.json",
-                Query = $"api_key={ApiConstants.ApiKeyRead}&results=1"
+                Query = $"api_key={ApiConstants.ApiKeyRead}&results={amount}"
             };
 
             return await _genericRepository.GetAsync<Measurements>(builder.ToString());
@@ -52,6 +52,5 @@ namespace Xamarin_Projekt.Services.MeasurementService
             await _genericRepository.PostAsync<Measurements>(builder.ToString(), measurements);
             return true;
         }
-
     }
 }

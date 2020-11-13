@@ -8,7 +8,7 @@ namespace Xamarin_Projekt.Services.MeasurementService
 {
     public interface IMeasurementService
     {
-        Task<Measurements> GetMeasurementAsync();
+        Task<Measurements> GetMeasurementAsync(int amount);
         Task<bool> PostMeasurementAsync(Measurements measurements);
     }
 }
