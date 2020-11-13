@@ -18,11 +18,13 @@ namespace Xamarin_Projekt.Views
             InitializeComponent();
             BindingContext = new MeasurementViewModel();
 
+            // Alert som vises hvis brugeren prøvet at sende noget til API'en som ikke er et tal
             MessagingCenter.Subscribe<MeasurementViewModel>(this, "InvalidEntry", (sender) =>
             {
                 DisplayAlert("Error", "The entries must be a number!", "OK");
             });
 
+            // Alert som vises når dataen er blevet sendt til API'en
             MessagingCenter.Subscribe<MeasurementViewModel>(this, "ValidEntry", (sender) =>
             {
                 DisplayAlert("Success", "The temperatur and humidity has been saved and send to the Thingspeak API!", "OK");

@@ -18,6 +18,7 @@ namespace Xamarin_Projekt.ViewModels
             Title = "Measurement";
 
             GetMeasurementCommand = new Command(async () => await GetMeasurement());
+
             PostMeasurementCommand = new Command(
                 execute: async () =>
                 {
@@ -39,6 +40,10 @@ namespace Xamarin_Projekt.ViewModels
                 });
         }
 
+        /// <summary>
+        /// Henter temperatur og fugtighed
+        /// </summary>
+        /// <returns></returns>
         async Task GetMeasurement()
         {
             var items = await _measurementService.GetMeasurementAsync();
@@ -51,6 +56,10 @@ namespace Xamarin_Projekt.ViewModels
             RefreshCanExecutes();
         }
 
+        /// <summary>
+        /// Tilføjer temperatur og fugtighed til api'en
+        /// </summary>
+        /// <returns></returns>
         async Task PostMeasurement()
         {
             bool isValid;

@@ -48,6 +48,8 @@ namespace Xamarin_Projekt.Repository
         {
             try
             {
+                // Policy som tjekker om brugeren prøvet at POSTE for mange gange i streg
+                // Thingspeak skal have tid for at kunne modtage data
                 return await Policy
                     .Handle<JsonSerializationException>()
                     .WaitAndRetryForeverAsync(retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)))

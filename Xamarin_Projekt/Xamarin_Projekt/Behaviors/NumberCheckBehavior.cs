@@ -20,6 +20,12 @@ namespace Xamarin_Projekt.Behaviors
             base.OnDetachingFrom(entry);
         }
 
+        /// <summary>
+        /// Behavior methode som tjekker om det indtastede data i en entry er et tal.
+        /// Hvis det ikke er et tal, så bliver tekst farven rød
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         void OnEntryTextChanged(object sender, TextChangedEventArgs args)
         {
             double result;

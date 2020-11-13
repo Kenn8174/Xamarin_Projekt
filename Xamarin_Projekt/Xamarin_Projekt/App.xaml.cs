@@ -15,6 +15,7 @@ namespace Xamarin_Projekt
         {
             InitializeComponent();
 
+            // TinyIoC tilføjes og de nødvendige DI tilføjes
             var container = TinyIoCContainer.Current;
             container.Register<MockDataStore>();
             container.Register<IGenericRepository, GenericRepository>();

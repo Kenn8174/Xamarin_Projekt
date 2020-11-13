@@ -6,19 +6,23 @@
              Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout>
+            <!-- Temperatur -->
             <Label Text="Temperatur" FontSize="Medium" TextColor="Black"/>
             <Entry Text="{Binding Temperatur}" Placeholder="Temperatur">
                 <Entry.Behaviors>
                     <behavior:NumberCheckBehavior/>
                 </Entry.Behaviors>
             </Entry>
+            <!-- Fugtighed -->
             <Label Text="Humidity" FontSize="Medium" TextColor="Black"/>
             <Entry Text="{Binding Humidity}" Placeholder="Humidity">
                 <Entry.Behaviors>
                     <behavior:NumberCheckBehavior/>
                 </Entry.Behaviors>
             </Entry>
+            <!-- Hent data fra API til appen -->
             <Button Text="Hent" FontSize="Medium" Command="{Binding GetMeasurementCommand}" IsEnabled="{Binding IsValid}"/>
+            <!-- Tilføj data fra appen til API -->
             <Button Text="Tilføj" FontSize="Medium" Command="{Binding PostMeasurementCommand}" IsEnabled="{Binding IsValid}"/>
             <ActivityIndicator IsRunning="{Binding IsBusy}"/>
         </StackLayout>

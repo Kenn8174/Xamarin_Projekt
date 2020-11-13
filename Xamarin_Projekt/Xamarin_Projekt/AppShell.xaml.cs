@@ -13,7 +13,7 @@ namespace Xamarin_Projekt
             InitializeComponent();
             Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
             Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
-            Routing.RegisterRoute(nameof(MeasurementPage), typeof(MeasurementPage));
+            Routing.RegisterRoute(nameof(MeasurementPage), typeof(MeasurementPage));        // Side hvor at data kan hentes og tilføjes fra/til API'en
         }
 
         private async void OnMenuItemClicked(object sender, EventArgs e)
