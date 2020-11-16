@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Xamarin_Projekt.ViewModels"
+             xmlns:model="clr-namespace:Xamarin_Projekt.Models"
+             x:Class="Xamarin_Projekt.Views.MeasurementListPage">
+
+    <RefreshView x:DataType="local:MeasurementListViewModel" Command="{Binding LoadMeasurementsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <CollectionView x:Name="ItemsListView"
+                ItemsSource="{Binding MeasurementItems}"
+                SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10" x:DataType="model:MeasurementItem">
+                        <Label FontSize="16"
+                               LineBreakMode="NoWrap"
+                               Style="{DynamicResource ListItemTextStyle}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding entry_id, StringFormat='ID: {0}'}" FontAttributes="Bold" FontSize="20"/>
+                                    <Span Text="{Binding created_at, StringFormat=' {0}'}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Text="{Binding field7, StringFormat='Temperatur: {0}°'}" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemDetailTextStyle}"
+                            FontSize="13" />
+                        <Label Text="{Binding field8, StringFormat='Humidity: {0}%'}" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemDetailTextStyle}"
+                            FontSize="13" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+    
+</ContentPage>

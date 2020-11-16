@@ -39,7 +39,7 @@ namespace Xamarin_Projekt.Services.MeasurementService
         /// </summary>
         /// <param name="measurements"></param>
         /// <returns></returns>
-        public async Task<bool> PostMeasurementAsync(Measurements measurements)
+        public async Task<bool> PostMeasurementAsync(MeasurementItem measurements)
         {
             UriBuilder builder = new UriBuilder(ApiConstants.ApiURL)
             {
@@ -49,7 +49,7 @@ namespace Xamarin_Projekt.Services.MeasurementService
                 Query = $"api_key={ApiConstants.ApiKeyWrite}&field7={measurements.field7}&field8={measurements.field8}"
             };
 
-            await _genericRepository.PostAsync<Measurements>(builder.ToString(), measurements);
+            await _genericRepository.PostAsync<MeasurementItem>(builder.ToString(), measurements);
             return true;
         }
     }

@@ -12,7 +12,6 @@ namespace Xamarin_Projekt.ViewModels
 
         public Command GetMeasurementCommand { get; }
         public Command PostMeasurementCommand { get; set; }
-        public Command GetAllMeasurementsCommand { get; }
 
         public MeasurementViewModel()
         {
@@ -23,9 +22,9 @@ namespace Xamarin_Projekt.ViewModels
             PostMeasurementCommand = new Command(
                 execute: async () =>
                 {
-                    bool isValid = double.TryParse(_temperatur, out _) && double.TryParse(_humidity, out _);
+                    bool validationCheck = double.TryParse(_temperatur, out _) && double.TryParse(_humidity, out _);
 
-                    if (isValid == false)
+                    if (validationCheck == false)
                     {
                         MessagingCenter.Send(this, "InvalidEntry");
                     }
@@ -39,8 +38,6 @@ namespace Xamarin_Projekt.ViewModels
                         IsValid = true;
                     }
                 });
-
-            GetAllMeasurementsCommand = new Command(async () => await GetMeasurement(1000));
         }
 
         /// <summary>
@@ -65,15 +62,13 @@ namespace Xamarin_Projekt.ViewModels
         /// <returns></returns>
         async Task PostMeasurement()
         {
-            bool isValid;
-
-
-            Measurements measurements = new Measurements()
+            MeasurementItem measurements = new MeasurementItem()
             {
-                field7 = Convert.ToDouble(_temperatur),
-                field8 = Convert.ToDouble(_humidity)
+                field7 = Convert.ToDouble(_temperatur),                                     // Temperatur
+                field8 = Convert.ToDouble(_humidity)                                        // Fugtighed
             };
-            isValid = await _measurementService.PostMeasurementAsync(measurements);
+
+            await _measurementService.PostMeasurementAsync(measurements);
 
             RefreshCanExecutes();
         }
