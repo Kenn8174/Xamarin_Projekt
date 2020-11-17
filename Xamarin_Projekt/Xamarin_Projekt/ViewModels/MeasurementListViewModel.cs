@@ -36,7 +36,7 @@ namespace Xamarin_Projekt.ViewModels
                 items.feeds.Reverse();
                 foreach (var item in items.feeds)
                 {
-                    item.created_at = item.created_at.Replace("T", " ");                            // Fjerne 'T' og 'Z'
+                    item.created_at = item.created_at.Replace("T", " ");                            // Fjerner 'T' og 'Z'
                     item.created_at = item.created_at.Replace("Z", " ");                            // fra datoen dataen er målt
                     MeasurementItems.Add(item);
                 }

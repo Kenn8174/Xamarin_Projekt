@@ -44,6 +44,10 @@ Det meste af koden er skrevet asynchront, så brugeren kan bruge appen imens at 
 På denne del af appen kan brugeren hente det seneste målte temperatur og fugtighed, udover det kan brugeren også tilføje data
 som så bliver lagt op i et ThingSpeak API, hvor det biver vist i en graf.
 
+|Flow chart **GET**|Flow Chart **POST**|
+|:----------------:|:-----------------:|
+|![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/GetMeasurement.JPG)|![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/PostMeasurement.JPG)|
+
 ### Filer
 
 - MeasurementPage.xaml
@@ -125,9 +129,6 @@ public async Task<Measurements> GetMeasurementAsync(int amount)
     return await _genericRepository.GetAsync<Measurements>(builder.ToString());
 }
 ```
-### Hentning af data fra API - Flowchart
-
-![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/GetMeasurement.JPG)
 
 ### PostMeasurement
 
@@ -191,10 +192,6 @@ public async Task<bool> PostMeasurementAsync(MeasurementItem measurements)
 }
 ```
 
-### Tilføjelse af data til API - Flowchart
-
-![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/PostMeasurement.JPG)
-
 ## MeasurementListPage
 
 Inde under `MeasurementListPage` kan brugeren se en liste over alle målte temperature og fugtigheder, som er blevet gemt på **ThingSpeak**.
@@ -217,3 +214,59 @@ LoadMeasurementsCommand = new Command(async () => await ExecuteLoadMeasurementsC
 ```
 
 ### ExecuteLoadMeasurementsCommand
+
+Henter de nødvendige data til at udfylde listen. Det der bliver vist på listen for hvert måling:
+
+- **entry_id**: Hver måling har et ID, som stiger med **1** hver gang der bliver tilføjet en måling
+- **created_at**: Datoen og tidspunktet bliver også gemt, dette gør det nemmere at se hvornår dataen blev målt
+- **field7**: Field7 er det *field* som bliver brugt til at gemme temperatur i en graf inde under ThingSpeak
+- **field8**: Field8 er til fugtihheden
+
+```c#
+async Task ExecuteLoadMeasurementsCommand()
+{
+    IsBusy = true;
+
+    try
+    {
+        MeasurementItems.Clear();
+        var items = await GetAllMeasurements();                
+        items.feeds.Reverse();
+        foreach (var item in items.feeds)
+        {
+            item.created_at = item.created_at.Replace("T", " ");                            // Fjerner 'T' og 'Z'
+            item.created_at = item.created_at.Replace("Z", " ");                            // fra datoen dataen er målt
+            MeasurementItems.Add(item);
+        }
+    }
+    catch (Exception ex)
+    {
+
+    }
+    finally
+    {
+        IsBusy = false;
+    }
+}
+```
+
+`ExecuteLoadMeasurementCommand()` kører en `GetAllMeasurements()` methode. Det den gør er at den kører en anden methode, som ligger i `measurementService`.
+Denne, `GetMeasurementAsync(antal)`, bliver også brugt i **MeasurementPage**, men da bliver der ikke hentet *1000* målinger, men kun *1*. Dette kunne også
+have blevet lavet dynamisk, så brugeren vælger hvor mange målinger der skal hentes.
+
+```c#
+public async Task<Measurements> GetAllMeasurements()
+{
+    return await _measurementService.GetMeasurementAsync(1000);                             // Henter de seneste 1000 målinger fra APIen
+}
+```
+
+## Screenshots
+
+|Measurement Page|Measurement Success|Measurement Load|Measurement List Page|
+|:--:|:--:|:--:|:--:|
+|![Measurement Page](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementPage.png)|![Measurement Success](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementSuccess.png)|![Measurement Load](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementLoad.png)|![Measurement List Page](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementListPage.png)
+
+|ThingSpeak|
+|:--:|
+![ThingSpeak måling](./Xamarin_Projekt/Xamarin_Projekt/Images/ThingSpeak.png)|
