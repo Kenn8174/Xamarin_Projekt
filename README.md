@@ -1,4 +1,8 @@
+<center>
+
 # App programmering 3 projekt - Kenneth Jessen
+
+</center>
 
 <h3>Indholsfortegnelse</h3>
 
@@ -370,3 +374,12 @@ Her kan man se de forskellige messages. **Success** bliver vist hvis brugeren ha
 |ThingSpeak|
 |:--:|
 ![ThingSpeak måling](./Xamarin_Projekt/Xamarin_Projekt/Images/ThingSpeak.PNG)|
+
+</br>
+</br>
+
+<center>
+
+<b>Lavet af <i>Kenneth Jessen</i></b>
+
+</center>
