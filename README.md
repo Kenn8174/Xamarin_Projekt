@@ -1,6 +1,27 @@
 # App programmering 3 projekt - Kenneth Jessen
 
-## Krav til projektet
+<h3>Indholsfortegnelse</h3>
+
+1. <b>[Krav](#1-Krav)</b>
+2. <b>[Indledning](#2-Indledning)</b>
+    - [Features](#2-1-Features)
+    - [Andre Features](#2-2-AndreFeatures)
+    - [Flowchart](#2-3-Flowchart)
+3. <b>[MeasurementPage](#3-MeasurementPage)</b>
+    - [Filer](#3-1-Filer)
+    - [Messaging Center](#3-2-MessagingCenter)
+    - [Commands](#3-3-Commands)
+    - [GetMeasurement](#3-4-GetMeasurement)
+    - [PostMeasurement](#3-5-PostMeasurement)
+4. <b>[MeasurementListPage](#4-MeasurementListPage)</b>
+    - [Command](#4-1-Command)
+    - [ExecuteLoadMeasurements](#4-2-ExecuteLoadMeasurements)
+5. <b>[Behavior](#5-Behavior)</b>
+    - [Attach / Detach](#5-1-AttachAndDetach)
+    - [Behavior XAML](#5-2-BehaviorXAML)
+6. <b>[Screenshots](#6-Screenshots)</b>
+
+<h2 id="1-Krav">1. Krav til projektet</h2>
 
 - Projektet går ud på at lave en app, der kan hente temperatur- og fugtighedsmålinger fra Thingspeak cloudservicen.
 
@@ -14,20 +35,20 @@
 
 - Projektet afleveres i Github og præsenteres for klassen.
 
-## Indledning
+<h2 id="2-Indledning">2. Indledning</h2>
 
 Projektet er lavet med et flyout shell template, det vil sige at menuen og nogle features allerede er lavet.
 Projektet er også lavet med MVVM (Model View ViewModel), som så gør det nemmere og mere overskueligt at læse koden.
 Det meste af koden er skrevet asynchront, så brugeren kan bruge appen imens at der bliver udført features.
 
-### Features
+<h3 id="2-1-Features">Features</h3>
 
 - Appen kan hente det seneste målte temperatur og fugtighed
 - Brugeren kan tilføje temperatur og fugtighed
 - Der er oprettet en exceptionhandling, så brugeren kun kan tilføje data ca. hvert 15 sek
 - Der er mulighed for at se alle målte temperature og fugtigheder
 
-### Andre features som er implementeret
+<h3 id="2-2-AndreFeatures">Andre features som er implementeret</h3>
 
 - MVVM
 - Behavior
@@ -35,11 +56,11 @@ Det meste af koden er skrevet asynchront, så brugeren kan bruge appen imens at 
 - Polly
 - Shell
 
-### Flowchart
+<h3 id="2-3-Flowchart">Flowchart</h3>
 
 ![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/AppFlowchart.JPG)
 
-## MeasurementPage
+<h2 id="3-MeasurementPage">3. MeasurementPage</h2>
 
 På denne del af appen kan brugeren hente det seneste målte temperatur og fugtighed, udover det kan brugeren også tilføje data
 som så bliver lagt op i et ThingSpeak API, hvor det biver vist i en graf.
@@ -48,14 +69,14 @@ som så bliver lagt op i et ThingSpeak API, hvor det biver vist i en graf.
 |:----------------:|:-----------------:|
 |![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/GetMeasurement.JPG)|![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/PostMeasurement.JPG)|
 
-### Filer
+<h3 id="3-1-Filer">Filer</h3>
 
 - MeasurementPage.xaml
 - MeasurementPage.xaml.cs
 - MeasurementViewModel.cs
 - MeasurementService.cs
 
-### MessagingCenter
+<h3 id="3-2-MessagingCenter">MessagingCenter</h3>
 
 Der er oprette to messages, en til hvis brugeren ikke har indtastet et valid tal. Den anden er når brugeren har tilføjet data til APIen og det er gået igennem.
 
@@ -75,7 +96,7 @@ MessagingCenter.Subscribe<MeasurementViewModel>(this, "ValidEntry", (sender) =>
 });
 ```
 
-### Commands
+<h3 id="3-3-Commands">Commands</h3>
 
 Inde under ViewModelen er der oprettet to commands, nemlig **GET** og **POST**. Brugeren har mulighed for at hente og tilføje data fra Thingspeak APIen.
 
@@ -87,7 +108,7 @@ public Command GetMeasurementCommand { get; }
 public Command PostMeasurementCommand { get; set; }
 ```
 
-### GetMeasurement
+<h3 id="3-4-GetMeasurement">GetMeasurement</h3>
 
 Kommandoen bliver sat til at skulle køre en methode.
 
@@ -130,7 +151,7 @@ public async Task<Measurements> GetMeasurementAsync(int amount)
 }
 ```
 
-### PostMeasurement
+<h3 id="3-5-PostMeasurement">PostMeasurement</h3>
 
 Inden at methoden bliver kørt som rent faktisk tilføjer dataen ud til APIen, er der lavet en validering til om brugeren har indtastet et nummer eller ej.
 Hvis brugeren ikke har bliver der sendt en Alert ud med at der er indtastet et ugyldig tegn.
@@ -192,18 +213,18 @@ public async Task<bool> PostMeasurementAsync(MeasurementItem measurements)
 }
 ```
 
-## MeasurementListPage
+<h2 id="4-MeasurementListPage">4. MeasurementListPage</h2>
 
 Inde under `MeasurementListPage` kan brugeren se en liste over alle målte temperature og fugtigheder, som er blevet gemt på **ThingSpeak**.
 
-### Filer
+<h3></h3>Filer
 
 - MeasurementListPage.xaml
 - MeasurementListPage.xaml.cs
 - MeasurementListViewModel.cs
 - MeasurementViewModel.cs
 
-### Command
+<h3 id="4-1-Command">Command</h3>
 
 ```c#
 public Command LoadMeasurementsCommand { get; }
@@ -213,7 +234,7 @@ public Command LoadMeasurementsCommand { get; }
 LoadMeasurementsCommand = new Command(async () => await ExecuteLoadMeasurementsCommand());
 ```
 
-### ExecuteLoadMeasurementsCommand
+<h3 id="4-2-ExecuteLoadMeasurements">ExecuteLoadMeasurements</h3>
 
 Henter de nødvendige data til at udfylde listen. Det der bliver vist på listen for hvert måling:
 
@@ -261,7 +282,60 @@ public async Task<Measurements> GetAllMeasurements()
 }
 ```
 
-## Screenshots
+<h2 id="5-Behavior">5. Behavior</h2>
+
+I appen under **MeasurementPage** er der oprettet en lille behavior, som kan se om brugeren har indtastet et nummer inde under de to entries på siden.
+Hvis brugeren har indtastet noget som ikke er et nummer bliver teksten rød, som så skal indikere at det er forkert.
+
+<h3 id="5-1-AttachAndDetach">Attach / Detach</h3>
+
+```c#
+protected override void OnAttachedTo(Entry entry)
+{
+    entry.TextChanged += OnEntryTextChanged;
+    base.OnAttachedTo(entry);
+}
+
+protected override void OnDetachingFrom(Entry entry)
+{
+    entry.TextChanged -= OnEntryTextChanged;
+    base.OnDetachingFrom(entry);
+}
+```
+
+Meget simpelt, tjekker om teksten er en double, og hvis det ikke er bliver teksten rød, ellers er den standard farve, som er sort.
+
+```c#
+void OnEntryTextChanged(object sender, TextChangedEventArgs args)
+{
+    double result;
+    bool isValid = double.TryParse(args.NewTextValue, out result);
+    ((Entry)sender).TextColor = isValid ? Color.Default : Color.Red;
+}
+```
+
+<h3 id="5-2-BehaviorXAML">Behavior XAML</h3>
+
+Både temperatur og fugtigheds entry har en behavior, de bruger dog samme behavior, men dette er intet problem.
+
+```xml
+ <!-- Temperatur -->
+<Label Text="Temperatur" FontSize="Medium" TextColor="Black"/>
+<Entry Text="{Binding Temperatur}" Placeholder="Temperatur">
+    <Entry.Behaviors>
+        <behavior:NumberCheckBehavior/>
+    </Entry.Behaviors>
+</Entry>
+<!-- Fugtighed -->
+<Label Text="Humidity" FontSize="Medium" TextColor="Black"/>
+<Entry Text="{Binding Humidity}" Placeholder="Humidity">
+    <Entry.Behaviors>
+        <behavior:NumberCheckBehavior/>
+    </Entry.Behaviors>
+</Entry>
+```
+
+<h2 id="6-Screenshots">6. Screenshots</h2> 
 
 |Measurement Page|Measurement Success|Measurement Load|Measurement List Page|
 |:--:|:--:|:--:|:--:|
