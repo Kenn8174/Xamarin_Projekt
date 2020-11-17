@@ -343,4 +343,4 @@ Både temperatur og fugtigheds entry har en behavior, de bruger dog samme behavi
 
 |ThingSpeak|
 |:--:|
-![ThingSpeak måling](./Xamarin_Projekt/Xamarin_Projekt/Images/ThingSpeak.png)|
+![ThingSpeak måling](./Xamarin_Projekt/Xamarin_Projekt/Images/ThingSpeak.PNG)|
