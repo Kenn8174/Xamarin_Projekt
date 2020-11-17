@@ -39,18 +39,19 @@ Det meste af koden er skrevet asynchront, så brugeren kan bruge appen imens at 
 
 ![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/AppFlowchart.JPG)
 
-## Kode
+## MeasurementPage
 
-### MeasurementPage
+På denne del af appen kan brugeren hente det seneste målte temperatur og fugtighed, udover det kan brugeren også tilføje data
+som så bliver lagt op i et ThingSpeak API, hvor det biver vist i en graf.
 
-#### Filer
+### Filer
 
 - MeasurementPage.xaml
 - MeasurementPage.xaml.cs
 - MeasurementViewModel.cs
 - MeasurementService.cs
 
-#### MessagingCenter
+### MessagingCenter
 
 Der er oprette to messages, en til hvis brugeren ikke har indtastet et valid tal. Den anden er når brugeren har tilføjet data til APIen og det er gået igennem.
 
@@ -70,9 +71,9 @@ MessagingCenter.Subscribe<MeasurementViewModel>(this, "ValidEntry", (sender) =>
 });
 ```
 
-#### Commands
+### Commands
 
-Inde under ViewModelen er der oprettet to commands, nemlig **GET** og **POST**. Brugere har mulighed for at hente og tilføje data fra Thingspeak APIen.
+Inde under ViewModelen er der oprettet to commands, nemlig **GET** og **POST**. Brugeren har mulighed for at hente og tilføje data fra Thingspeak APIen.
 
 ```c#
 public Command GetMeasurementCommand { get; }
@@ -82,7 +83,7 @@ public Command GetMeasurementCommand { get; }
 public Command PostMeasurementCommand { get; set; }
 ```
 
-#### GetMeasurement
+### GetMeasurement
 
 Kommandoen bliver sat til at skulle køre en methode.
 
@@ -124,11 +125,11 @@ public async Task<Measurements> GetMeasurementAsync(int amount)
     return await _genericRepository.GetAsync<Measurements>(builder.ToString());
 }
 ```
-#### Hentning af data fra API - Flowchart
+### Hentning af data fra API - Flowchart
 
 ![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/GetMeasurement.JPG)
 
-#### PostMeasurement
+### PostMeasurement
 
 Inden at methoden bliver kørt som rent faktisk tilføjer dataen ud til APIen, er der lavet en validering til om brugeren har indtastet et nummer eller ej.
 Hvis brugeren ikke har bliver der sendt en Alert ud med at der er indtastet et ugyldig tegn.
@@ -190,8 +191,29 @@ public async Task<bool> PostMeasurementAsync(MeasurementItem measurements)
 }
 ```
 
-#### Tilføjelse af data til API - Flowchart
+### Tilføjelse af data til API - Flowchart
 
 ![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/PostMeasurement.JPG)
 
-### MeasurementListPage
+## MeasurementListPage
+
+Inde under `MeasurementListPage` kan brugeren se en liste over alle målte temperature og fugtigheder, som er blevet gemt på **ThingSpeak**.
+
+### Filer
+
+- MeasurementListPage.xaml
+- MeasurementListPage.xaml.cs
+- MeasurementListViewModel.cs
+- MeasurementViewModel.cs
+
+### Command
+
+```c#
+public Command LoadMeasurementsCommand { get; }
+```
+
+```c#
+LoadMeasurementsCommand = new Command(async () => await ExecuteLoadMeasurementsCommand());
+```
+
+### ExecuteLoadMeasurementsCommand
