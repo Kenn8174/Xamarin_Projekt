@@ -20,6 +20,9 @@
     - [Attach / Detach](#5-1-AttachAndDetach)
     - [Behavior XAML](#5-2-BehaviorXAML)
 6. <b>[Screenshots](#6-Screenshots)</b>
+    - [Measurement sider](#6-1-MeasurementPages)
+    - [Measurement funktioner](#6-2-MeasurementFunktioner)
+    - [ThingSpeak](#6-3-ThingSpeakScreenshot)
 
 <h2 id="1-Krav">1. Krav til projektet</h2>
 
@@ -39,7 +42,9 @@
 
 Projektet er lavet med et flyout shell template, det vil sige at menuen og nogle features allerede er lavet.
 Projektet er også lavet med MVVM (Model View ViewModel), som så gør det nemmere og mere overskueligt at læse koden.
-Det meste af koden er skrevet asynchront, så brugeren kan bruge appen imens at der bliver udført features.
+Det meste af koden er skrevet asynchront, så brugeren kan bruge appen imens at der bliver udført features. Appen
+går ud på at brugeren kan hente data fra en **ThingSpeak API**, og tilføje data tilbage. **ThingSpeak** er en hjemmeside
+hvorpå man kan tilføje og hente data, som så bliver vist i en graf.
 
 <h3 id="2-1-Features">Features</h3>
 
@@ -65,9 +70,11 @@ Det meste af koden er skrevet asynchront, så brugeren kan bruge appen imens at 
 På denne del af appen kan brugeren hente det seneste målte temperatur og fugtighed, udover det kan brugeren også tilføje data
 som så bliver lagt op i et ThingSpeak API, hvor det biver vist i en graf.
 
+
 |Flow chart **GET**|Flow Chart **POST**|
 |:----------------:|:-----------------:|
 |![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/GetMeasurement.JPG)|![Flowchart](./Xamarin_Projekt/Xamarin_Projekt/Images/PostMeasurement.JPG)|
+
 
 <h3 id="3-1-Filer">Filer</h3>
 
@@ -337,9 +344,28 @@ Både temperatur og fugtigheds entry har en behavior, de bruger dog samme behavi
 
 <h2 id="6-Screenshots">6. Screenshots</h2> 
 
-|Measurement Page|Measurement Success|Measurement Load|Measurement List Page|
-|:--:|:--:|:--:|:--:|
-|![Measurement Page](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementPage.png)|![Measurement Success](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementSuccess.png)|![Measurement Load](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementLoad.png)|![Measurement List Page](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementListPage.png)
+<h3 id="6-1-MeasurementPages">MeasurementPage og MeasurementListPage</h3>
+
+Her er nogle screenshots af selve appen. *Billederne er kun dele af appen som indegår projektet*. </br>
+De første to billeder viser de to sider som er oprettet, nemlig **MeasurementPage** og **MeasurementListPage**.
+
+|Measurement Page|Measurement List Page|
+|:--:|:--:|
+|![Measurement Page](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementPage.png)|![Measurement List Page](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementListPage.png)
+
+<h3 id="6-2-MeasurementFunktioner">Measurement funktioner</h3>
+
+Her kan man se de forskellige messages. **Success** bliver vist hvis brugeren har tilføjet gyldig data til APIen.
+**Fail** vises hvis brugen prøvet at tilføje ugyldig data. </br>
+*Da ThingSpeak kun kan tage imod data lidt ad gangen er der sat en loader i gang når brugeren prøvet at tilføje data for hurtigt*
+
+|Measurement Success|Measurement Fail|Measurement Load|
+|:--:|:--:|:--:|
+|![Measurement Success](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementSuccess.png)|![Measurement Success](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementFail.png)|![Measurement Load](./Xamarin_Projekt/Xamarin_Projekt/Images/MeasurementLoad.png)|
+
+<h3 id="6-3-ThingSpeakScreenshot">ThingSpeak</h3>
+
+**ThingSpeak** viser det tilføjet data i grafer, som man kan se på nedestående billede.
 
 |ThingSpeak|
 |:--:|
